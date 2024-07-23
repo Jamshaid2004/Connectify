@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1091798446800",
+    "project_id": "connectify-f711c",
+    "storage_bucket": "connectify-f711c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1091798446800:android:57298994af13df288464d5",
+        "android_client_info": {
+          "package_name": "com.example.connectify_project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1091798446800-mn1105eo006hk82l753hcoadofnpqtku.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.connectify_project",
+            "certificate_hash": "bf6df2b9004a048003f78036c3904f1698ce6691"
+          }
+        },
+        {
+          "client_id": "1091798446800-ckb80ch6nd125vhinaqh8kp07hpmqk63.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBys7dqGmUOeWPGfzSvHLv7mzGwFRUryKM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1091798446800-ckb80ch6nd125vhinaqh8kp07hpmqk63.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
