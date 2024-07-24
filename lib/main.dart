@@ -2,14 +2,19 @@ import 'package:connectify_project/controller/home%20page%20controller/home_page
 import 'package:connectify_project/controller/login%20signup%20controller/login_signup_bloc.dart';
 import 'package:connectify_project/firebase_options.dart';
 import 'package:connectify_project/screens/main%20screens/home_page.dart';
+import 'package:connectify_project/screens/signup_screen.dart';
 import 'package:connectify_project/utils/route_generator.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  GetIt.I.registerSingleton<SharedPreferences>(prefs);
   runApp(const MyApp());
 }
 

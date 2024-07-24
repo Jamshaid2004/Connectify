@@ -6,10 +6,14 @@ import 'package:connectify_project/controller/login%20signup%20controller/login_
 import 'package:connectify_project/screens/login_screen.dart';
 import 'package:connectify_project/screens/main%20screens/home_page.dart';
 import 'package:connectify_project/screens/signup_screen.dart';
+import 'package:connectify_project/utils/constants/shared_preferences_constant.dart';
+import 'package:connectify_project/utils/constants/sign_in_method_constant.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginSignupBloc extends Bloc<LoginSignupEvents, LoginSignupStates> {
   final String titleApp = 'connectify_title';
@@ -17,6 +21,7 @@ class LoginSignupBloc extends Bloc<LoginSignupEvents, LoginSignupStates> {
   static const String kUsername = 'username';
   static const String kfirebaseUsernameCollection =
       'usernameAndEmailCollection';
+
   TextEditingController emailLoginPageController = TextEditingController();
   TextEditingController passwordLoginPageController = TextEditingController();
   TextEditingController emailSignupPageController = TextEditingController();
@@ -25,6 +30,9 @@ class LoginSignupBloc extends Bloc<LoginSignupEvents, LoginSignupStates> {
 
   GlobalKey<FormState> loginFormkey = GlobalKey<FormState>();
   GlobalKey<FormState> signupFormkey = GlobalKey<FormState>();
+
+  late SharedPreferences preferences;
+
   final firebaseStorageBox = FirebaseFirestore.instance;
   String? usernameValidator(String? value) {
     if (value == '' || value == null) {
@@ -78,8 +86,11 @@ class LoginSignupBloc extends Bloc<LoginSignupEvents, LoginSignupStates> {
             .then(
           (value) {
             log(value.docs.first.data()[kUsername]);
-            Navigator.of(context).popAndPushNamed(HomePage.pageAddress,
-                arguments: value.docs.first.data()[kUsername]);
+            preferences.setString(SharedPreferencesConstant.username,
+                value.docs.first.data()[kUsername]);
+            preferences.setString(SharedPreferencesConstant.signInMethod,
+                SignInMethod.signInByEmail);
+            Navigator.of(context).popAndPushNamed(HomePage.pageAddress);
           },
         );
       } on FirebaseAuthException catch (e) {
@@ -124,11 +135,13 @@ class LoginSignupBloc extends Bloc<LoginSignupEvents, LoginSignupStates> {
         await firebaseStorageBox
             .collection(kfirebaseUsernameCollection)
             .add(usernameMap);
+        preferences.setString(SharedPreferencesConstant.username, username);
+        preferences.setString(
+            SharedPreferencesConstant.signInMethod, SignInMethod.signInByEmail);
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('signed up successfully')));
-          Navigator.of(context)
-              .popAndPushNamed(HomePage.pageAddress, arguments: username);
+          Navigator.of(context).popAndPushNamed(HomePage.pageAddress);
         }
       } on FirebaseAuthException catch (e) {
         if (context.mounted) {
@@ -152,7 +165,12 @@ class LoginSignupBloc extends Bloc<LoginSignupEvents, LoginSignupStates> {
         .add(usernameMap);
     final credentials = GoogleAuthProvider.credential(
         accessToken: googleAuth?.accessToken, idToken: googleAuth?.idToken);
+
     await FirebaseAuth.instance.signInWithCredential(credentials);
+    preferences.setString(SharedPreferencesConstant.username,
+        googleUser!.displayName ?? 'username');
+    preferences.setString(
+        SharedPreferencesConstant.signInMethod, SignInMethod.signInByGoogle);
     if (context.mounted) {
       Navigator.of(context).popAndPushNamed(HomePage.pageAddress);
     }
@@ -169,6 +187,7 @@ class LoginSignupBloc extends Bloc<LoginSignupEvents, LoginSignupStates> {
   }
 
   LoginSignupBloc() : super(LoginSignupInitialState()) {
+    preferences = GetIt.I.get<SharedPreferences>();
     on<LoginSignupEvents>(
       (event, emit) async {
         if (event is LoginWithEmailButtonClickEvent) {

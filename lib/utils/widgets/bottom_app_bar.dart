@@ -12,7 +12,7 @@ class AppBottomBar extends StatelessWidget {
     var bloc = context.read<HomePageBloc>();
     var Size(:height) = MediaQuery.sizeOf(context);
     return ConvexAppBar(
-      initialActiveIndex: 4,
+      initialActiveIndex: 0,
       backgroundColor: Colors.black,
       height: height * 0.065,
       top: height * -0.03,
