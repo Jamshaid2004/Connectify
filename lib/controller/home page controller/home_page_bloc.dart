@@ -1,10 +1,10 @@
 import 'package:connectify_project/controller/home%20page%20controller/home_page_events.dart';
 import 'package:connectify_project/controller/home%20page%20controller/home_page_states.dart';
-import 'package:connectify_project/screens/main%20screens/add%20section/add_section.dart';
-import 'package:connectify_project/screens/main%20screens/explore%20section/explore_section.dart';
-import 'package:connectify_project/screens/main%20screens/home%20section/home_section.dart';
-import 'package:connectify_project/screens/main%20screens/inbox%20section/inbox_section.dart';
-import 'package:connectify_project/screens/main%20screens/profile%20section/profile_section.dart';
+import 'package:connectify_project/screens/main%20screens/add_section/add_section.dart';
+import 'package:connectify_project/screens/main%20screens/explore_section/explore_section.dart';
+import 'package:connectify_project/screens/main%20screens/home_section/home_section.dart';
+import 'package:connectify_project/screens/main%20screens/inbox_section/inbox_section.dart';
+import 'package:connectify_project/screens/main%20screens/profile_section/profile_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

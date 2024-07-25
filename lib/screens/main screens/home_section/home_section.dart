@@ -1,4 +1,4 @@
-import 'package:connectify_project/screens/main%20screens/home%20section/home_section_widgets.dart';
+import 'package:connectify_project/screens/main%20screens/home_section/home_section_widgets.dart';
 import 'package:flutter/material.dart';
 
 class HomeSection extends StatelessWidget {

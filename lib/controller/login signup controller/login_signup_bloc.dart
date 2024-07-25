@@ -8,6 +8,7 @@ import 'package:connectify_project/screens/main%20screens/home_page.dart';
 import 'package:connectify_project/screens/signup_screen.dart';
 import 'package:connectify_project/utils/constants/shared_preferences_constant.dart';
 import 'package:connectify_project/utils/constants/sign_in_method_constant.dart';
+import 'package:connectify_project/utils/constants/user_firestore_doc_constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,8 +18,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginSignupBloc extends Bloc<LoginSignupEvents, LoginSignupStates> {
   final String titleApp = 'connectify_title';
-  static const String kEmail = 'email';
-  static const String kUsername = 'username';
+
   static const String kfirebaseUsernameCollection =
       'usernameAndEmailCollection';
 
@@ -33,7 +33,7 @@ class LoginSignupBloc extends Bloc<LoginSignupEvents, LoginSignupStates> {
 
   late SharedPreferences preferences;
 
-  final firebaseStorageBox = FirebaseFirestore.instance;
+  final firestore = FirebaseFirestore.instance;
   String? usernameValidator(String? value) {
     if (value == '' || value == null) {
       return "required field is empty";
@@ -79,15 +79,15 @@ class LoginSignupBloc extends Bloc<LoginSignupEvents, LoginSignupStates> {
         log('successfully sign in to firebase');
         emailLoginPageController.clear();
         passwordLoginPageController.clear();
-        await firebaseStorageBox
+        await firestore
             .collection(kfirebaseUsernameCollection)
-            .where(kEmail, isEqualTo: email)
+            .where(UserFirestoreDocConstants.kEmail, isEqualTo: email)
             .get()
             .then(
           (value) {
-            log(value.docs.first.data()[kUsername]);
+            log(value.docs.first.data()[UserFirestoreDocConstants.kUsername]);
             preferences.setString(SharedPreferencesConstant.username,
-                value.docs.first.data()[kUsername]);
+                value.docs.first.data()[UserFirestoreDocConstants.kUsername]);
             preferences.setString(SharedPreferencesConstant.signInMethod,
                 SignInMethod.signInByEmail);
             Navigator.of(context).popAndPushNamed(HomePage.pageAddress);
@@ -126,13 +126,17 @@ class LoginSignupBloc extends Bloc<LoginSignupEvents, LoginSignupStates> {
         await FirebaseAuth.instance
             .createUserWithEmailAndPassword(email: email, password: password);
         Map<String, dynamic> usernameMap = {
-          kEmail: email,
-          kUsername: username,
+          UserFirestoreDocConstants.kEmail: email,
+          UserFirestoreDocConstants.kUsername: username,
+          UserFirestoreDocConstants.kBio: '',
+          UserFirestoreDocConstants.kFollowers: [],
+          UserFirestoreDocConstants.kFollowings: [],
+          UserFirestoreDocConstants.kProfilePosts: [],
         };
         usernameSignupPageController.clear();
         emailSignupPageController.clear();
         passwordSignupPageController.clear();
-        await firebaseStorageBox
+        await firestore
             .collection(kfirebaseUsernameCollection)
             .add(usernameMap);
         preferences.setString(SharedPreferencesConstant.username, username);
@@ -157,12 +161,15 @@ class LoginSignupBloc extends Bloc<LoginSignupEvents, LoginSignupStates> {
     final GoogleSignInAuthentication? googleAuth =
         await googleUser?.authentication;
     Map<String, dynamic> usernameMap = {
-      kEmail: googleUser?.email,
-      kUsername: googleUser?.displayName,
+      UserFirestoreDocConstants.kEmail: googleUser?.email,
+      UserFirestoreDocConstants.kUsername: googleUser?.displayName,
+      UserFirestoreDocConstants.kBio: '',
+      UserFirestoreDocConstants.kProfileImage: '',
+      UserFirestoreDocConstants.kFollowers: [],
+      UserFirestoreDocConstants.kFollowings: [],
+      UserFirestoreDocConstants.kProfilePosts: [],
     };
-    await firebaseStorageBox
-        .collection(kfirebaseUsernameCollection)
-        .add(usernameMap);
+    await firestore.collection(kfirebaseUsernameCollection).add(usernameMap);
     final credentials = GoogleAuthProvider.credential(
         accessToken: googleAuth?.accessToken, idToken: googleAuth?.idToken);
 
