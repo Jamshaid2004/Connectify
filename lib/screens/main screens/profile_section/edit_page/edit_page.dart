@@ -1,4 +1,4 @@
-import 'package:connectify_project/screens/main%20screens/profile_section/edit%20page/edit_page_widgets.dart';
+import 'package:connectify_project/screens/main%20screens/profile_section/edit_page/edit_page_widgets.dart';
 
 import 'package:flutter/material.dart';
 
@@ -17,6 +17,8 @@ class SettingsPage extends StatelessWidget {
               ProfileEditPageCircleAvataorImageWidget(),
               ProfileEditPageEditTextUsernameWidget(),
               ProfileEditPageEditTextPasswordWidget(),
+              ProfileEditPageCloseFriendsTab(),
+              ProfileEditPageBlockAccountsTab(),
               ProfileEditPageDividerWidget(),
               ProfileEditPagePrivateAccountSwitchWidget(),
               ProfileEditPageDividerWidget(),

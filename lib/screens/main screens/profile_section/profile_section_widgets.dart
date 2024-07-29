@@ -1,4 +1,4 @@
-import 'package:connectify_project/screens/main%20screens/profile_section/edit%20page/edit_page.dart';
+import 'package:connectify_project/screens/main%20screens/profile_section/edit_page/edit_page.dart';
 
 import 'package:connectify_project/utils/constants/user_firestore_doc_constants.dart';
 
@@ -33,6 +33,7 @@ class ProfileSectionOverviewWidget extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
+                          // 'name',
                           preferences
                               .getString(UserFirestoreDocConstants.kUsername)!,
                           style: TextStyle(

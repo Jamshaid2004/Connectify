@@ -8,15 +8,23 @@ class ProfileSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    final Size(:width) = MediaQuery.sizeOf(context);
+    return Scaffold(
       body: Center(
         child: Stack(
           children: [
-            CustomScrollView(
+            const CustomScrollView(
               slivers: [
                 ProfileSectionOverviewWidget(),
                 ProfileSectionPostsWidget(),
               ],
+            ),
+            Padding(
+              padding: EdgeInsets.all(width * 0.05),
+              child: CircleAvatar(
+                backgroundColor: Colors.white,
+                radius: width * 0.13,
+              ),
             ),
           ],
         ),
@@ -27,4 +35,3 @@ class ProfileSection extends StatelessWidget {
 
 
 /// logout button click method
-

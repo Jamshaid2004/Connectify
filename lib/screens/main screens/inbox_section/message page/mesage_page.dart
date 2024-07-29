@@ -1,3 +1,4 @@
+import 'package:connectify_project/screens/main%20screens/inbox_section/message%20page/message_page_widgets.dart';
 import 'package:flutter/material.dart';
 
 class MessagePage extends StatelessWidget {
@@ -5,12 +6,19 @@ class MessagePage extends StatelessWidget {
   final String username;
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.sizeOf(context);
     return Scaffold(
       backgroundColor: Colors.black,
-      body: Center(
-        child: Text(username,
-            style:
-                ThemeData.dark().textTheme.titleLarge!.copyWith(fontSize: 40)),
+      appBar: MessagePageAppBarWidget(
+          context: context, username: username, size: size),
+      body: Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          const MessagePageMessageListWidget(),
+          Positioned(
+              bottom: size.width * 0.05,
+              child: const MessagePageTextFieldWidget()),
+        ],
       ),
     );
   }
