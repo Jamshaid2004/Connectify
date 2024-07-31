@@ -1,4 +1,4 @@
-import 'package:connectify_project/screens/main%20screens/profile_section/profile_section_widgets.dart';
+import 'package:connectify_project/screens/main%20screens/profile%20section/profile_section_widgets.dart';
 
 import 'package:flutter/material.dart';
 

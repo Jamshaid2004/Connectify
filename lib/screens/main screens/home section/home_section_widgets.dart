@@ -1,3 +1,4 @@
+import 'package:connectify_project/screens/main%20screens/home%20section/notification%20page/notification_page.dart';
 import 'package:flutter/material.dart';
 
 class HomeSectionAppBarWidget extends StatelessWidget {
@@ -18,7 +19,13 @@ class HomeSectionAppBarWidget extends StatelessWidget {
       ),
       actions: [
         IconButton(
-          onPressed: () {},
+          onPressed: () {
+            ScaffoldMessenger.of(context)
+              ..clearSnackBars()
+              ..showSnackBar(
+                  const SnackBar(content: Text('notification page clicked')));
+            Navigator.of(context).pushNamed(NotificationPage.pageAddress);
+          },
           icon: Padding(
             padding: EdgeInsets.all(height * 0.01),
             child: Icon(

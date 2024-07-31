@@ -1,4 +1,4 @@
-import 'package:connectify_project/screens/main%20screens/inbox_section/information%20page/message_information_page.dart';
+import 'package:connectify_project/screens/main%20screens/inbox%20section/information%20page/message_information_page.dart';
 import 'package:flutter/material.dart';
 
 class MessagePageAppBarWidget extends AppBar {

@@ -1,7 +1,7 @@
 import 'package:connectify_project/controller/home%20page%20controller/home_page_bloc.dart';
 import 'package:connectify_project/controller/home%20page%20controller/home_page_states.dart';
 import 'package:connectify_project/screens/error_screen.dart';
-import 'package:connectify_project/screens/main%20screens/home_section/home_section.dart';
+import 'package:connectify_project/screens/main%20screens/home%20section/home_section.dart';
 import 'package:connectify_project/utils/widgets/bottom_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

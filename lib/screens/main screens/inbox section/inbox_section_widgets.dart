@@ -1,4 +1,4 @@
-import 'package:connectify_project/screens/main%20screens/inbox_section/message%20page/mesage_page.dart';
+import 'package:connectify_project/screens/main%20screens/inbox%20section/message%20page/mesage_page.dart';
 import 'package:connectify_project/utils/constants/shared_preferences_constant.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -51,7 +51,7 @@ class InboxSectionMessageTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var Size(:width) = MediaQuery.sizeOf(context);
-    return GestureDetector(
+    return InkWell(
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => MessagePage(username: index.toString()),

@@ -1,4 +1,4 @@
-import 'package:connectify_project/screens/main%20screens/inbox_section/message%20page/message_page_widgets.dart';
+import 'package:connectify_project/screens/main%20screens/inbox%20section/message%20page/message_page_widgets.dart';
 import 'package:flutter/material.dart';
 
 class MessagePage extends StatelessWidget {

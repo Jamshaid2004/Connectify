@@ -1,4 +1,4 @@
-import 'package:connectify_project/screens/main%20screens/profile_section/edit_page/close_friends_page/close_friends_page_widgets.dart';
+import 'package:connectify_project/screens/main%20screens/profile%20section/edit%20page/close%20friends%20page/close_friends_page_widgets.dart';
 import 'package:flutter/material.dart';
 
 class CloseFriendsPage extends StatelessWidget {
