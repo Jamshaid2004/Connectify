@@ -1,4 +1,5 @@
 import 'package:connectify_project/screens/main%20screens/home%20section/notification%20page/notification_page.dart';
+import 'package:connectify_project/screens/main%20screens/home%20section/story%20page/story_page.dart';
 import 'package:flutter/material.dart';
 
 class HomeSectionAppBarWidget extends StatelessWidget {
@@ -55,14 +56,25 @@ class HomeSectionStoriesWidget extends StatelessWidget {
           itemBuilder: (context, index) {
             return Padding(
               padding: EdgeInsets.all(height * 0.005),
-              child: Column(
-                children: [
-                  CircleAvatar(
-                    radius: height * 0.05,
-                    backgroundColor: Colors.white,
-                  ),
-                  Text('name $index'),
-                ],
+              child: InkWell(
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return StoryPage(username: 'name $index');
+                      },
+                    ),
+                  );
+                },
+                child: Column(
+                  children: [
+                    CircleAvatar(
+                      radius: height * 0.05,
+                      backgroundColor: Colors.white,
+                    ),
+                    Text('name $index'),
+                  ],
+                ),
               ),
             );
           },

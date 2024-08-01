@@ -1,3 +1,4 @@
+import 'package:camera/camera.dart';
 import 'package:connectify_project/controller/home%20page%20controller/home_page_bloc.dart';
 import 'package:connectify_project/controller/login%20signup%20controller/login_signup_bloc.dart';
 import 'package:connectify_project/firebase_options.dart';
@@ -10,10 +11,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+late List<CameraDescription> camera;
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  camera = await availableCameras();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   final SharedPreferences prefs = await SharedPreferences.getInstance();
+  GetIt.I.registerSingleton<List<CameraDescription>>(camera);
   GetIt.I.registerSingleton<SharedPreferences>(prefs);
   runApp(const MyApp());
 }
