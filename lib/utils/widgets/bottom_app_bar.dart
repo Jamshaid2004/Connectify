@@ -1,5 +1,5 @@
-import 'package:connectify_project/controller/home%20page%20controller/home_page_bloc.dart';
-import 'package:connectify_project/controller/home%20page%20controller/home_page_events.dart';
+import 'package:connectify_project/controller/main%20controllers/home%20page%20controller/home_page_bloc.dart';
+import 'package:connectify_project/controller/main%20controllers/home%20page%20controller/home_page_events.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

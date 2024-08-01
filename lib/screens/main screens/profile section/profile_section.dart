@@ -22,7 +22,7 @@ class ProfileSection extends StatelessWidget {
             Padding(
               padding: EdgeInsets.all(width * 0.05),
               child: CircleAvatar(
-                backgroundColor: Colors.white,
+                backgroundColor: Colors.blue,
                 radius: width * 0.13,
               ),
             ),
@@ -32,6 +32,3 @@ class ProfileSection extends StatelessWidget {
     );
   }
 }
-
-
-/// logout button click method

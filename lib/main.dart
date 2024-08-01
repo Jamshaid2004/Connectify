@@ -1,6 +1,7 @@
 import 'package:camera/camera.dart';
-import 'package:connectify_project/controller/home%20page%20controller/home_page_bloc.dart';
+import 'package:connectify_project/controller/main%20controllers/home%20page%20controller/home_page_bloc.dart';
 import 'package:connectify_project/controller/login%20signup%20controller/login_signup_bloc.dart';
+import 'package:connectify_project/controller/main%20controllers/home%20sections%20controllers/home%20section%20controller/home%20controller/home_section_controller.dart';
 import 'package:connectify_project/firebase_options.dart';
 import 'package:connectify_project/screens/main%20screens/home_page.dart';
 import 'package:connectify_project/screens/signup_screen.dart';
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => LoginSignupBloc()),
         BlocProvider(create: (context) => HomePageBloc()),
+        BlocProvider(create: (context) => HomeSectionBloc())
       ],
       child: MaterialApp(
         title: title,

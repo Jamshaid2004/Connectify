@@ -1,6 +1,7 @@
-import 'package:connectify_project/screens/main%20screens/home%20section/notification%20page/notification_page.dart';
-import 'package:connectify_project/screens/main%20screens/home%20section/story%20page/story_page.dart';
+import 'package:connectify_project/controller/main%20controllers/home%20sections%20controllers/home%20section%20controller/home%20controller/home_section_controller.dart';
+import 'package:connectify_project/controller/main%20controllers/home%20sections%20controllers/home%20section%20controller/home%20controller/home_section_events.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeSectionAppBarWidget extends StatelessWidget {
   const HomeSectionAppBarWidget({super.key});
@@ -8,6 +9,7 @@ class HomeSectionAppBarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var Size(:height) = MediaQuery.sizeOf(context);
+    final bloc = context.read<HomeSectionBloc>();
     return SliverAppBar(
       backgroundColor: Colors.black,
       floating: true,
@@ -21,11 +23,7 @@ class HomeSectionAppBarWidget extends StatelessWidget {
       actions: [
         IconButton(
           onPressed: () {
-            ScaffoldMessenger.of(context)
-              ..clearSnackBars()
-              ..showSnackBar(
-                  const SnackBar(content: Text('notification page clicked')));
-            Navigator.of(context).pushNamed(NotificationPage.pageAddress);
+            bloc.add(HomeSectionNotificationClickEvent(context: context));
           },
           icon: Padding(
             padding: EdgeInsets.all(height * 0.01),
@@ -46,6 +44,7 @@ class HomeSectionStoriesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bloc = context.read<HomeSectionBloc>();
     var Size(:height) = MediaQuery.sizeOf(context);
     return SliverToBoxAdapter(
       child: SizedBox(
@@ -58,13 +57,7 @@ class HomeSectionStoriesWidget extends StatelessWidget {
               padding: EdgeInsets.all(height * 0.005),
               child: InkWell(
                 onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return StoryPage(username: 'name $index');
-                      },
-                    ),
-                  );
+                  bloc.add(HomeSectionStoryClickEvent(username: 'name $index'));
                 },
                 child: Column(
                   children: [
@@ -89,6 +82,9 @@ class HomeSectionPostsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bloc = context.read<HomeSectionBloc>();
+    bool isLiked = false;
+    // all posts will have same isLiked value because the same variable is using while building the list item
     var Size(:height, :width) = MediaQuery.sizeOf(context);
     return SliverList.builder(
       itemCount: 10,
@@ -128,23 +124,51 @@ class HomeSectionPostsWidget extends StatelessWidget {
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Icon(
-                            Icons.favorite,
-                            size: height * 0.03,
+                          StatefulBuilder(builder: (context, setState) {
+                            Color favColor =
+                                isLiked ? Colors.red : Colors.white;
+                            return IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  isLiked = !isLiked;
+                                });
+                                bloc.add(
+                                    HomeSectionPostLikeEvent(postId: index));
+                              },
+                              icon: Icon(
+                                Icons.favorite,
+                                color: favColor,
+                              ),
+                              iconSize: height * 0.03,
+                            );
+                          }),
+                          IconButton(
+                            onPressed: () {
+                              bloc.add(
+                                  HomeSectionPostCommentEvent(postId: index));
+                            },
+                            icon: const Icon(
+                              Icons.mode_comment,
+                              color: Colors.white,
+                            ),
+                            iconSize: height * 0.03,
                           ),
-                          Icon(
-                            Icons.mode_comment,
-                            size: height * 0.03,
-                          ),
-                          Icon(
-                            Icons.share,
-                            size: height * 0.03,
+                          IconButton(
+                            onPressed: () {
+                              bloc.add(
+                                  HomeSectionPostShareEvent(postId: index));
+                            },
+                            icon: const Icon(
+                              Icons.share,
+                              color: Colors.white,
+                            ),
+                            iconSize: height * 0.03,
                           ),
                         ],
                       ),
                     ),
                   ),
-                )
+                ),
               ],
             ),
           ),

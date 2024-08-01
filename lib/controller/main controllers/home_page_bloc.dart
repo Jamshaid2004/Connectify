@@ -1,5 +1,5 @@
-import 'package:connectify_project/controller/home%20page%20controller/home_page_events.dart';
-import 'package:connectify_project/controller/home%20page%20controller/home_page_states.dart';
+import 'package:connectify_project/controller/main%20controllers/home%20page%20controller/home_page_events.dart';
+import 'package:connectify_project/controller/main%20controllers/home%20page%20controller/home_page_states.dart';
 import 'package:connectify_project/screens/main%20screens/add%20section/add_section.dart';
 import 'package:connectify_project/screens/main%20screens/explore%20section/explore_section.dart';
 import 'package:connectify_project/screens/main%20screens/home%20section/home_section.dart';
