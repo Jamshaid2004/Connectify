@@ -1,5 +1,5 @@
-import 'package:connectify_project/controller/main%20controllers/home%20sections%20controllers/home%20section%20controller/home%20controller/home_section_controller.dart';
-import 'package:connectify_project/controller/main%20controllers/home%20sections%20controllers/home%20section%20controller/home%20controller/home_section_states.dart';
+import 'package:connectify_project/controller/main%20controllers/sections%20controllers/home%20section%20controller/home%20controller/home_section_bloc.dart';
+import 'package:connectify_project/controller/main%20controllers/sections%20controllers/home%20section%20controller/home%20controller/home_section_states.dart';
 import 'package:connectify_project/screens/main%20screens/home%20section/home_section_widgets.dart';
 import 'package:connectify_project/screens/main%20screens/home%20section/story%20page/story_page.dart';
 import 'package:flutter/material.dart';

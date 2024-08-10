@@ -5,3 +5,6 @@ abstract class EditProfilePageStates {}
 
 @immutable
 class EditProfilePageInitialState extends EditProfilePageStates {}
+
+@immutable
+class EditProfilePageUsernameUpdatedState extends EditProfilePageStates {}

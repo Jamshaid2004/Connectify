@@ -1,6 +1,8 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:connectify_project/controller/main%20controllers/sections%20controllers/profile%20section%20controller/edit%20profile%20controller/edit_profile_page_bloc.dart';
+import 'package:connectify_project/controller/main%20controllers/sections%20controllers/profile%20section%20controller/edit%20profile%20controller/edit_profile_page_events.dart';
 import 'package:connectify_project/screens/login_screen.dart';
 import 'package:connectify_project/screens/main%20screens/profile%20section/edit%20page/blocked%20accounts%20page/blocked_accounts_page.dart';
 import 'package:connectify_project/screens/main%20screens/profile%20section/edit%20page/close%20friends%20page/close_friends_page.dart';
@@ -9,6 +11,7 @@ import 'package:connectify_project/utils/constants/sign_in_method_constant.dart'
 import 'package:connectify_project/utils/constants/user_firestore_doc_constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
@@ -25,81 +28,127 @@ class ProfileEditPageCircleAvataorImageWidget extends StatelessWidget {
     File? imageFile;
     return Padding(
       padding: EdgeInsets.all(width * 0.05),
-      child: StatefulBuilder(builder: (context, state) {
-        return GestureDetector(
-          onTap: () async {
-            try {
-              xFile =
-                  await ImagePicker().pickImage(source: ImageSource.gallery);
-              if (xFile != null) {
-                imageFile = File(xFile!.path);
+      child: StatefulBuilder(
+        builder: (context, state) {
+          return GestureDetector(
+            onTap: () async {
+              try {
+                xFile =
+                    await ImagePicker().pickImage(source: ImageSource.gallery);
+                if (xFile != null) {
+                  imageFile = File(xFile!.path);
+                }
+                state(() {});
+              } on Exception catch (e) {
+                log(e.toString());
               }
-              state(() {});
-            } on Exception catch (e) {
-              log(e.toString());
-            }
-          },
-          child: DecoratedBox(
-            decoration: const BoxDecoration(
-              boxShadow: [
-                BoxShadow(blurRadius: 50, color: Colors.grey, spreadRadius: 1),
-              ],
-            ),
-            child: Stack(
-              children: [
-                Builder(
-                  builder: (context) {
-                    if (imageFile != null) {
-                      if (imageFile!.path == '') {
-                        return CircleAvatar(
-                          radius: width * 0.13,
-                          backgroundImage: const AssetImage(image),
-                        );
+            },
+            child: DecoratedBox(
+              decoration: const BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                      blurRadius: 50, color: Colors.grey, spreadRadius: 1),
+                ],
+              ),
+              child: Stack(
+                children: [
+                  Builder(
+                    builder: (context) {
+                      if (imageFile != null) {
+                        if (imageFile!.path == '') {
+                          return CircleAvatar(
+                            radius: width * 0.13,
+                            backgroundImage: const AssetImage(image),
+                          );
+                        } else {
+                          return CircleAvatar(
+                              radius: width * 0.13,
+                              backgroundImage: FileImage(imageFile!));
+                        }
                       } else {
                         return CircleAvatar(
-                            radius: width * 0.13,
-                            backgroundImage: FileImage(imageFile!));
+                          radius: width * 0.13,
+                          backgroundImage: const AssetImage(
+                              'assets/images/no_profile_image.jpeg'),
+                        );
                       }
-                    } else {
-                      return CircleAvatar(
-                        radius: width * 0.13,
-                        backgroundImage: const AssetImage(
-                            'assets/images/no_profile_image.jpeg'),
-                      );
-                    }
-                  },
-                ),
-                Positioned(
-                    right: width * 0.005,
-                    bottom: width * 0.005,
-                    child: Icon(Icons.edit))
-              ],
+                    },
+                  ),
+                  Positioned(
+                      right: width * 0.005,
+                      bottom: width * 0.005,
+                      child: const Icon(Icons.edit))
+                ],
+              ),
             ),
-          ),
-        );
-      }),
+          );
+        },
+      ),
     );
   }
 }
 
-class ProfileEditPageEditTextUsernameWidget extends StatelessWidget {
+class ProfileEditPageEditTextUsernameWidget extends StatefulWidget {
   const ProfileEditPageEditTextUsernameWidget({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    var preferences = GetIt.I.get<SharedPreferences>();
-    var Size(:width) = MediaQuery.sizeOf(context);
-    String username =
+  State<ProfileEditPageEditTextUsernameWidget> createState() =>
+      _ProfileEditPageEditTextUsernameWidgetState();
+}
+
+class _ProfileEditPageEditTextUsernameWidgetState
+    extends State<ProfileEditPageEditTextUsernameWidget> {
+  late TextEditingController usernameController;
+  late String currentUsername;
+  Color tickColor = Colors.white;
+  bool isChangeable = false;
+  var preferences = GetIt.I.get<SharedPreferences>();
+  @override
+  void initState() {
+    super.initState();
+    usernameController = TextEditingController();
+
+    currentUsername =
         preferences.getString(UserFirestoreDocConstants.kUsername)!;
+  }
+
+  @override
+  void dispose() {
+    usernameController.dispose();
+
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var Size(:width) = MediaQuery.sizeOf(context);
+    var bloc = context.read<EditProfilePageBloc>();
     return Padding(
       padding: EdgeInsets.only(left: width * 0.05, right: width * 0.05),
       child: SizedBox(
         width: width * 0.6,
         child: TextFormField(
           cursorColor: Colors.white,
-          initialValue: username,
+          onChanged: changeListener,
+          initialValue: currentUsername,
           decoration: InputDecoration(
-            suffix: GestureDetector(child: const Icon(Icons.check)),
+            suffix: GestureDetector(
+              onTap: () {
+                if (isChangeable) {
+                  bloc.add(EditProfilePageUsernameUpdateEvent(
+                      username: usernameController.text));
+                  setState(
+                    () {
+                      tickColor = Colors.white;
+                    },
+                  );
+                }
+              },
+              child: Icon(
+                Icons.check,
+                color: tickColor,
+              ),
+            ),
             prefixIcon: const Icon(Icons.person),
             border: InputBorder.none,
             focusedBorder: InputBorder.none,
@@ -110,10 +159,37 @@ class ProfileEditPageEditTextUsernameWidget extends StatelessWidget {
       ),
     );
   }
+
+  changeListener(String value) {
+    if (value == '' || value == currentUsername) {
+    } else {
+      setState(() {
+        tickColor = Colors.green;
+        isChangeable = true;
+      });
+    }
+  }
 }
 
-class ProfileEditPageEditTextPasswordWidget extends StatelessWidget {
+class ProfileEditPageEditTextPasswordWidget extends StatefulWidget {
   const ProfileEditPageEditTextPasswordWidget({super.key});
+
+  @override
+  State<ProfileEditPageEditTextPasswordWidget> createState() =>
+      _ProfileEditPageEditTextPasswordWidgetState();
+}
+
+class _ProfileEditPageEditTextPasswordWidgetState
+    extends State<ProfileEditPageEditTextPasswordWidget> {
+  late TextEditingController passwordController;
+  late String currentPassword;
+  var preferences = GetIt.I.get<SharedPreferences>();
+  @override
+  void initState() {
+    super.initState();
+    passwordController = TextEditingController();
+    // currentPassword = preferences.getString(Fire)
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -128,7 +204,9 @@ class ProfileEditPageEditTextPasswordWidget extends StatelessWidget {
             child: SizedBox(
               width: width * 0.6,
               child: TextFormField(
+                controller: passwordController,
                 cursorColor: Colors.white,
+                onChanged: (value) {},
                 decoration: InputDecoration(
                   suffix: GestureDetector(child: const Icon(Icons.check)),
                   prefixIcon: const Icon(Icons.lock),

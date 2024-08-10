@@ -1,5 +1,5 @@
-import 'package:connectify_project/controller/main%20controllers/home%20sections%20controllers/home%20section%20controller/home%20controller/home_section_events.dart';
-import 'package:connectify_project/controller/main%20controllers/home%20sections%20controllers/home%20section%20controller/home%20controller/home_section_states.dart';
+import 'package:connectify_project/controller/main%20controllers/sections%20controllers/home%20section%20controller/home%20controller/home_section_events.dart';
+import 'package:connectify_project/controller/main%20controllers/sections%20controllers/home%20section%20controller/home%20controller/home_section_states.dart';
 import 'package:connectify_project/screens/main%20screens/home%20section/notification%20page/notification_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

@@ -1,2 +1,0 @@
-@override
-abstract class EditProfilePageEvents {}

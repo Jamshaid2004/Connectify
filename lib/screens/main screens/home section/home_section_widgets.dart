@@ -1,5 +1,5 @@
-import 'package:connectify_project/controller/main%20controllers/home%20sections%20controllers/home%20section%20controller/home%20controller/home_section_controller.dart';
-import 'package:connectify_project/controller/main%20controllers/home%20sections%20controllers/home%20section%20controller/home%20controller/home_section_events.dart';
+import 'package:connectify_project/controller/main%20controllers/sections%20controllers/home%20section%20controller/home%20controller/home_section_bloc.dart';
+import 'package:connectify_project/controller/main%20controllers/sections%20controllers/home%20section%20controller/home%20controller/home_section_events.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -82,98 +82,180 @@ class HomeSectionPostsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = context.read<HomeSectionBloc>();
-    bool isLiked = false;
-    // all posts will have same isLiked value because the same variable is using while building the list item
-    var Size(:height, :width) = MediaQuery.sizeOf(context);
     return SliverList.builder(
       itemCount: 10,
       itemBuilder: (context, index) {
-        return Padding(
-          padding: EdgeInsets.all(height * 0.005),
-          child: SizedBox(
-            width: width * 0.7,
-            height: width,
-            child: Stack(
+        return HomePagePostWidget(postIndex: index);
+      },
+    );
+  }
+}
+
+class HomePagePostWidget extends StatelessWidget {
+  final int postIndex;
+  const HomePagePostWidget({super.key, required this.postIndex});
+
+  @override
+  Widget build(BuildContext context) {
+    final bloc = context.read<HomeSectionBloc>();
+    bool isLiked = false;
+    bool postFav = false;
+    // all posts will have same isLiked value because the same variable is using while building the list item
+    var Size(:height, :width) = MediaQuery.sizeOf(context);
+    return Padding(
+      padding: EdgeInsets.all(height * 0.005),
+      child: SizedBox(
+        width: width * 0.7,
+        child: Column(
+          children: [
+            Stack(
               children: [
-                Container(
-                  color: Colors.grey,
+                Align(
+                  alignment: Alignment.center,
+                  child: Image.network(
+                      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKTezalux1__3KwbJ1Bt-WnQQkW82G1Nwy6g&s'),
                 ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Padding(
-                      padding: EdgeInsets.all(width * 0.02),
-                      child: CircleAvatar(
-                        backgroundColor: Colors.white,
-                        radius: width * 0.06,
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.all(width * 0.02),
+                          child: CircleAvatar(
+                            backgroundColor: Colors.white,
+                            radius: width * 0.06,
+                          ),
+                        ),
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'user name',
+                              style: TextStyle(fontSize: width * 0.04),
+                            ),
+                            Text(
+                              'San Fransico',
+                              style: TextStyle(fontSize: width * 0.03),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
-                    Text(
-                      'user name',
-                      style: TextStyle(fontSize: width * 0.045),
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.more_horiz,
+                        color: Colors.white,
+                      ),
                     ),
                   ],
                 ),
-                Positioned(
-                  bottom: 0,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SizedBox(
-                      width: width,
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          StatefulBuilder(builder: (context, setState) {
-                            Color favColor =
-                                isLiked ? Colors.red : Colors.white;
-                            return IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  isLiked = !isLiked;
-                                });
-                                bloc.add(
-                                    HomeSectionPostLikeEvent(postId: index));
-                              },
-                              icon: Icon(
-                                Icons.favorite,
-                                color: favColor,
-                              ),
-                              iconSize: height * 0.03,
-                            );
-                          }),
-                          IconButton(
-                            onPressed: () {
-                              bloc.add(
-                                  HomeSectionPostCommentEvent(postId: index));
-                            },
-                            icon: const Icon(
-                              Icons.mode_comment,
-                              color: Colors.white,
-                            ),
-                            iconSize: height * 0.03,
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              bloc.add(
-                                  HomeSectionPostShareEvent(postId: index));
-                            },
-                            icon: const Icon(
-                              Icons.share,
-                              color: Colors.white,
-                            ),
-                            iconSize: height * 0.03,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
               ],
             ),
-          ),
-        );
-      },
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    StatefulBuilder(
+                      builder: (context, setState) {
+                        Color favColor = isLiked ? Colors.red : Colors.white;
+                        return IconButton(
+                          onPressed: () {
+                            setState(() {
+                              isLiked = !isLiked;
+                            });
+                            bloc.add(
+                                HomeSectionPostLikeEvent(postId: postIndex));
+                          },
+                          icon: DecoratedBox(
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.circular(width * 0.05),
+                                color: isLiked
+                                    ? Colors.red.withOpacity(0.2)
+                                    : null),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                SizedBox(width: width * 0.02),
+                                Icon(
+                                  Icons.favorite,
+                                  color: favColor,
+                                ),
+                                SizedBox(width: width * 0.01),
+                                const Text('2,326'),
+                                SizedBox(width: width * 0.02),
+                              ],
+                            ),
+                          ),
+                          iconSize: height * 0.03,
+                        );
+                      },
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        bloc.add(
+                            HomeSectionPostCommentEvent(postId: postIndex));
+                      },
+                      icon: Row(
+                        children: [
+                          const Icon(
+                            Icons.mode_comment,
+                            color: Colors.white,
+                          ),
+                          SizedBox(width: width * 0.01),
+                          const Text('23'),
+                        ],
+                      ),
+                      iconSize: height * 0.03,
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        bloc.add(HomeSectionPostShareEvent(postId: postIndex));
+                      },
+                      icon: Row(
+                        children: [
+                          const Icon(
+                            Icons.share,
+                            color: Colors.white,
+                          ),
+                          SizedBox(width: width * 0.01),
+                          const Text('23')
+                        ],
+                      ),
+                      iconSize: height * 0.03,
+                    ),
+                  ],
+                ),
+                StatefulBuilder(
+                  builder: (context, setState) {
+                    return IconButton(
+                      onPressed: () {
+                        setState(() {
+                          postFav = !postFav;
+                        });
+                        ScaffoldMessenger.of(context)
+                          ..clearSnackBars()
+                          ..showSnackBar(
+                              const SnackBar(content: Text('Save Post')));
+                      },
+                      icon: Icon(
+                        Icons.system_update_tv_outlined,
+                        color: postFav ? Colors.white : Colors.grey,
+                      ),
+                    );
+                  },
+                )
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

@@ -29,6 +29,7 @@ class HomePageBloc extends Bloc<HomePageEvents, HomePageStates> {
             _ => ProfileSection.sectionAddress,
           };
           Widget sectionUpdateState = sectionPages[sectionAddress]!;
+
           emit(HomePageSectionUpdateState(section: sectionUpdateState));
         }
       },
